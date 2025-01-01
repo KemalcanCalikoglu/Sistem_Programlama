@@ -1,0 +1,102 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package javafiles;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class Client {
+   public Client() {
+   }
+
+   public static void main(String[] args) {
+      String host = "localhost";
+      int port = 8082;
+
+      try {
+         Throwable var3 = null;
+         Object var4 = null;
+
+         try {
+            Socket socket = new Socket(host, port);
+
+            try {
+               BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+               try {
+                  PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+                  try {
+                     Scanner scanner = new Scanner(System.in);
+
+                     try {
+                        System.out.println("Ba\u011flant\u0131 kuruldu. Komutlar\u0131n\u0131z\u0131 yaz\u0131n:");
+
+                        while(true) {
+                           System.out.print("> ");
+                           String command = scanner.nextLine();
+                           out.println(command);
+                           System.out.println(in.readLine());
+                        }
+                     } finally {
+                        if (scanner != null) {
+                           scanner.close();
+                        }
+
+                     }
+                  } catch (Throwable var41) {
+                     if (var3 == null) {
+                        var3 = var41;
+                     } else if (var3 != var41) {
+                        var3.addSuppressed(var41);
+                     }
+
+                     if (out != null) {
+                        out.close();
+                     }
+
+                     throw var3;
+                  }
+               } catch (Throwable var42) {
+                  if (var3 == null) {
+                     var3 = var42;
+                  } else if (var3 != var42) {
+                     var3.addSuppressed(var42);
+                  }
+
+                  if (in != null) {
+                     in.close();
+                  }
+
+                  throw var3;
+               }
+            } catch (Throwable var43) {
+               if (var3 == null) {
+                  var3 = var43;
+               } else if (var3 != var43) {
+                  var3.addSuppressed(var43);
+               }
+
+               if (socket != null) {
+                  socket.close();
+               }
+
+               throw var3;
+            }
+         } catch (Throwable var44) {
+            if (var3 == null) {
+               var3 = var44;
+            } else if (var3 != var44) {
+               var3.addSuppressed(var44);
+            }
+
+            throw var3;
+         }
+      } catch (IOException var45) {
+         var45.printStackTrace();
+      }
+   }
+}
