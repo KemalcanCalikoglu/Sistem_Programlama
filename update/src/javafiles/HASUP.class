@@ -1,0 +1,22 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package java;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HASUP {
+   private final List<String> users = new ArrayList();
+
+   public HASUP() {
+   }
+
+   public synchronized String processMessage(String var1) {
+      if (var1.startsWith("KAYIT:")) {
+         String var2 = var1.substring(6).trim();
+         this.users.add(var2);
+         return "Kullan\u0131c\u0131 ba\u015far\u0131yla kaydedildi: " + var2;
+      } else {
+         return var1.equals("G\u00d6R\u00dcNT\u00dcLE") ? "Kay\u0131tl\u0131 kullan\u0131c\u0131lar: " + String.join(", ", this.users) : "Ge\u00e7ersiz komut.";
+      }
+   }
+}
