@@ -1,0 +1,42 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package java;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Server {
+   public Server() {
+   }
+
+   public static void main(String[] var0) {
+      short var1 = 8082;
+      HASUP var2 = new HASUP();
+      ExecutorService var3 = Executors.newFixedThreadPool(10);
+
+      try {
+         ServerSocket var4 = new ServerSocket(var1);
+
+         try {
+            System.out.println("Sunucu " + var1 + " portunda ba\u015flat\u0131ld\u0131...");
+
+            while(true) {
+               Socket var5 = var4.accept();
+               var3.execute(new ServerHandler(var5, var2));
+            }
+         } catch (Throwable var8) {
+            try {
+               var4.close();
+            } catch (Throwable var7) {
+               var8.addSuppressed(var7);
+            }
+
+            throw var8;
+         }
+      } catch (IOException var9) {
+         var9.printStackTrace();
+      }
+   }
+}
