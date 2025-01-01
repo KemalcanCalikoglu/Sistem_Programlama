@@ -1,0 +1,80 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package java;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class Client {
+   public Client() {
+   }
+
+   public static void main(String[] var0) {
+      String var1 = "localhost";
+      short var2 = 8082;
+
+      try {
+         Socket var3 = new Socket(var1, var2);
+
+         try {
+            BufferedReader var4 = new BufferedReader(new InputStreamReader(var3.getInputStream()));
+
+            try {
+               PrintWriter var5 = new PrintWriter(var3.getOutputStream(), true);
+
+               try {
+                  Scanner var6 = new Scanner(System.in);
+
+                  try {
+                     System.out.println("Ba\u011flant\u0131 kuruldu. Komutlar\u0131n\u0131z\u0131 yaz\u0131n:");
+
+                     while(true) {
+                        System.out.print("> ");
+                        String var7 = var6.nextLine();
+                        var5.println(var7);
+                        System.out.println(var4.readLine());
+                     }
+                  } catch (Throwable var13) {
+                     try {
+                        var6.close();
+                     } catch (Throwable var12) {
+                        var13.addSuppressed(var12);
+                     }
+
+                     throw var13;
+                  }
+               } catch (Throwable var14) {
+                  try {
+                     var5.close();
+                  } catch (Throwable var11) {
+                     var14.addSuppressed(var11);
+                  }
+
+                  throw var14;
+               }
+            } catch (Throwable var15) {
+               try {
+                  var4.close();
+               } catch (Throwable var10) {
+                  var15.addSuppressed(var10);
+               }
+
+               throw var15;
+            }
+         } catch (Throwable var16) {
+            try {
+               var3.close();
+            } catch (Throwable var9) {
+               var16.addSuppressed(var9);
+            }
+
+            throw var16;
+         }
+      } catch (IOException var17) {
+         var17.printStackTrace();
+      }
+   }
+}
