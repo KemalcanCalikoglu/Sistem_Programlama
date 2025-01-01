@@ -1,0 +1,59 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package java;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class ServerHandler implements Runnable {
+   private final Socket clientSocket;
+   private final HASUP hasup;
+
+   public ServerHandler(Socket var1, HASUP var2) {
+      this.clientSocket = var1;
+      this.hasup = var2;
+   }
+
+   public void run() {
+      try {
+         BufferedReader var1 = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+
+         try {
+            PrintWriter var2 = new PrintWriter(this.clientSocket.getOutputStream(), true);
+
+            String var3;
+            try {
+               while((var3 = var1.readLine()) != null) {
+                  String var4 = this.hasup.processMessage(var3);
+                  var2.println(var4);
+               }
+            } catch (Throwable var7) {
+               try {
+                  var2.close();
+               } catch (Throwable var6) {
+                  var7.addSuppressed(var6);
+               }
+
+               throw var7;
+            }
+
+            var2.close();
+         } catch (Throwable var8) {
+            try {
+               var1.close();
+            } catch (Throwable var5) {
+               var8.addSuppressed(var5);
+            }
+
+            throw var8;
+         }
+
+         var1.close();
+      } catch (IOException var9) {
+         var9.printStackTrace();
+      }
+
+   }
+}
