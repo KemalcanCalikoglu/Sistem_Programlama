@@ -1,0 +1,73 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package javafiles;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class ServerHandler implements Runnable {
+   private final Socket clientSocket;
+   private final HASUP hasup;
+
+   public ServerHandler(Socket clientSocket, HASUP hasup) {
+      this.clientSocket = clientSocket;
+      this.hasup = hasup;
+   }
+
+   public void run() {
+      try {
+         Throwable var1 = null;
+         Object var2 = null;
+
+         try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+
+            try {
+               PrintWriter out = new PrintWriter(this.clientSocket.getOutputStream(), true);
+
+               String message;
+               try {
+                  while((message = in.readLine()) != null) {
+                     String response = this.hasup.processMessage(message);
+                     out.println(response);
+                  }
+               } finally {
+                  if (out != null) {
+                     out.close();
+                  }
+
+               }
+            } catch (Throwable var20) {
+               if (var1 == null) {
+                  var1 = var20;
+               } else if (var1 != var20) {
+                  var1.addSuppressed(var20);
+               }
+
+               if (in != null) {
+                  in.close();
+               }
+
+               throw var1;
+            }
+
+            if (in != null) {
+               in.close();
+            }
+         } catch (Throwable var21) {
+            if (var1 == null) {
+               var1 = var21;
+            } else if (var1 != var21) {
+               var1.addSuppressed(var21);
+            }
+
+            throw var1;
+         }
+      } catch (IOException var22) {
+         var22.printStackTrace();
+      }
+
+   }
+}
